@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.resume.mapper.ExperienceMapper" >
+    <insert id="addExperienceList" parameterType="java.util.List">
+        insert into experience_table (module_id, resume_id, module, title, section_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.resumeId}, #{item.module}, #{item.title}, #{item.sectionId})
+        </foreach>
+    </insert>
+
+
+    <insert id="addExperience">
+         insert into experience_table (module_id, resume_id, module, title, section_id) values  (#{id}, #{resumeId}, #{module}, #{title}, #{sectionId})
+    </insert>
+
+
+    <update id="updateSectionTitle">
+        update experience_table set title = #{title} where module_id = #{id}
+    </update>
+
+
+
+</mapper>
