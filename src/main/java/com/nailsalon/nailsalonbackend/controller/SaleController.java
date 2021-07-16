@@ -5,11 +5,11 @@ import com.nailsalon.nailsalonbackend.service.sale.SaleServiceImpl;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,5 +26,18 @@ public class SaleController {
     @PostMapping("/addSaleRecord")
     public void addSaleRecord(@RequestBody Map<String, Sale> map){
         System.out.println(map.get("saleRecord"));
+        saleService.addSaleRecord(map.get("saleRecord"));
+    }
+
+    @GetMapping("/getSaleRecord")
+    public List<Map<String, Object>> getSaleRecord(@RequestParam("date") String date) {
+        System.out.println(date);
+        List<Map<String, Object>> result = new ArrayList<>();
+        try {
+           result = saleService.getSaleRecord(date);
+        }catch(IOException e){
+            System.out.println(e);
+        }
+        return result;
     }
 }

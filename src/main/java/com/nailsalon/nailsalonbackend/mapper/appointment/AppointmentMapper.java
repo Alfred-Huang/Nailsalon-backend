@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface AppointmentMapper {
-
     void addAppointment(Appointment appointment);
 }

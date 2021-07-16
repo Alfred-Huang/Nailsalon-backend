@@ -4,13 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.nailsalon.nailsalonbackend.mapper.sale.SaleMapper" >
-    <insert id="addSaleRecord" >
-        insert into experience_table (module_id, resume_id, module, title, section_id) values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.resumeId}, #{item.module}, #{item.title}, #{item.sectionId})
+    <insert id="addSaleRecord">
+        insert into sale_table (sale_id, price, date, time, employees, services) values(#{saleId}, #{totalPrice}, #{date}, #{time}, #{employees}, #{services})
+    </insert>
+
+    <insert id="addServiceRecord">
+        insert into service_record_table (service_id, service, sale_id, date, time) values
+        <foreach collection="serviceList" item="map" index="index" separator=",">
+            (#{map.serviceId}, #{map.service}, #{saleId}, #{date}, #{time})
         </foreach>
     </insert>
 
-
+    <insert id="addEmployeeSaleRecord">
+        insert into employee_sale_table (employee, employee_id, sale, sale_id, date, time) values
+        <foreach collection="employeeList" item="map" index="index" separator=",">
+            (#{map.employee}, #{map.employeeId}, #{map.price}, #{saleId}, #{date}, #{time})
+        </foreach>
+    </insert>
 
 </mapper>

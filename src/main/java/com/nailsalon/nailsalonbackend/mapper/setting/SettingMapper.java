@@ -1,5 +1,6 @@
 package com.nailsalon.nailsalonbackend.mapper.setting;
 
+import com.nailsalon.nailsalonbackend.pojo.Service;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -7,5 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SettingMapper {
 
-    void addService();
+    void addService(Service service);
+
+    void updateService(Service service);
+
+    void deleteService(String id);
 }

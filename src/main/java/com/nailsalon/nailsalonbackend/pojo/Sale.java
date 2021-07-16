@@ -1,22 +1,27 @@
 package com.nailsalon.nailsalonbackend.pojo;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Sale {
     private String saleId;
-    private String[] services;
-    private String[] employees;
-    private int[] priceList;
+    private List<String> services;
+    private List<String> employees;
+    private List<String> employeeIdList;
+    private List<String> serviceIdList;
+    private List<Integer> priceList;
     private Integer totalPrice;
     private String date;
     private String time;
 
     public Sale(){}
 
-    public Sale(String saleId, String[] services, String[] employees, int[] priceList, Integer totalPrice, String date, String time) {
+    public Sale(String saleId, List<String> services, List<String> employees, List<String> employeeIdList, List<String> serviceIdList, List<Integer> priceList, Integer totalPrice, String date, String time) {
         this.saleId = saleId;
         this.services = services;
         this.employees = employees;
+        this.employeeIdList = employeeIdList;
+        this.serviceIdList = serviceIdList;
         this.priceList = priceList;
         this.totalPrice = totalPrice;
         this.date = date;
@@ -31,27 +36,43 @@ public class Sale {
         this.saleId = saleId;
     }
 
-    public String[] getServices() {
+    public List<String> getServices() {
         return services;
     }
 
-    public void setServices(String[] services) {
+    public void setServices(List<String> services) {
         this.services = services;
     }
 
-    public String[] getEmployees() {
+    public List<String> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(String[] employees) {
+    public void setEmployees(List<String> employees) {
         this.employees = employees;
     }
 
-    public int[] getPriceList() {
+    public List<String> getEmployeeIdList() {
+        return employeeIdList;
+    }
+
+    public void setEmployeeIdList(List<String> employeeIdList) {
+        this.employeeIdList = employeeIdList;
+    }
+
+    public List<String> getServiceIdList() {
+        return serviceIdList;
+    }
+
+    public void setServiceIdList(List<String> serviceIdList) {
+        this.serviceIdList = serviceIdList;
+    }
+
+    public List<Integer> getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(int[] priceList) {
+    public void setPriceList(List<Integer> priceList) {
         this.priceList = priceList;
     }
 
@@ -82,10 +103,12 @@ public class Sale {
     @Override
     public String toString() {
         return "Sale{" +
-                "saleId=" + saleId +
-                ", services=" + Arrays.toString(services) +
-                ", employees=" + Arrays.toString(employees) +
-                ", priceList=" + Arrays.toString(priceList) +
+                "saleId='" + saleId + '\'' +
+                ", services=" + services +
+                ", employees=" + employees +
+                ", employeeIdList=" + employeeIdList +
+                ", serviceIdList=" + serviceIdList +
+                ", priceList=" + priceList +
                 ", totalPrice=" + totalPrice +
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +

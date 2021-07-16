@@ -2,6 +2,7 @@ package com.nailsalon.nailsalonbackend.controller;
 
 import com.nailsalon.nailsalonbackend.pojo.Employee;
 import com.nailsalon.nailsalonbackend.pojo.Schedule;
+import com.nailsalon.nailsalonbackend.service.manage.ManageServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +15,25 @@ import java.util.Map;
 @RequestMapping("/manage")
 public class ManageController {
 
+
+
+    final
+    ManageServiceImpl manageService;
+
+    public ManageController(ManageServiceImpl employeeService) {
+        this.manageService = employeeService;
+    }
+
     @PostMapping("/addSchedule")
     public void addSchedule(@RequestBody Map<String, Schedule> map){
+        manageService.addScheduleMapper(map.get("schedule"));
         System.out.println(map.get("schedule"));
     }
 
     @PostMapping("/addEmployee")
     public void addEmployee(@RequestBody Map<String, List<Employee>> map){
         System.out.println(map.get("employeeList"));
+        manageService.addEmployee(map.get("employeeList"));
+
     }
 }
