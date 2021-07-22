@@ -11,9 +11,20 @@
         </foreach>
     </insert>
 
-    <insert id="addScheduleMapper">
+    <insert id="addSchedule">
         insert into employee_schedule_table (date, employee) values
         (#{date}, #{employee})
     </insert>
 
+    <update id="deleteEmployee">
+        update employee_table set deleted = '1' where employee_id = #{id}
+    </update>
+
+    <update id="updateSchedule">
+        update employee_schedule_table set employee = #{employee} where date = #{date}
+    </update>
+
+    <update id="deleteSchedule">
+           update employee_schedule_table set employee = #{employee} where date = #{date}
+    </update>
 </mapper>

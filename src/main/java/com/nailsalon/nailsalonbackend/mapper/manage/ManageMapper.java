@@ -6,10 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
 public interface ManageMapper {
     void addEmployee(List<Employee> employees);
-    void addScheduleMapper(Schedule schedule);
+    void deleteEmployee(String id);
+    void addSchedule(Schedule schedule);
+    void updateSchedule(String date, String employee);
+    void deleteSchedule(String date, String employee);
 }

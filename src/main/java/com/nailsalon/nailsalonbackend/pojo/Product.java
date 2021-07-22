@@ -1,5 +1,9 @@
 package com.nailsalon.nailsalonbackend.pojo;
 
+
+import org.springframework.data.elasticsearch.annotations.Document;
+
+@Document(indexName = "product_table")
 public class Product {
     private String productId;
     private String brand;

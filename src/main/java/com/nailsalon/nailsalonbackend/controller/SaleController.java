@@ -25,18 +25,17 @@ public class SaleController {
 
     @PostMapping("/addSaleRecord")
     public void addSaleRecord(@RequestBody Map<String, Sale> map){
-        System.out.println(map.get("saleRecord"));
         saleService.addSaleRecord(map.get("saleRecord"));
     }
 
     @GetMapping("/getSaleRecord")
     public List<Map<String, Object>> getSaleRecord(@RequestParam("date") String date) {
-        System.out.println(date);
         List<Map<String, Object>> result = new ArrayList<>();
         try {
            result = saleService.getSaleRecord(date);
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
+            return result;
         }
         return result;
     }

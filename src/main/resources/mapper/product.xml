@@ -11,6 +11,11 @@
         </foreach>
     </insert>
 
+    <update id="updateProduct">
+        update product_table set brand=#{brand}, type=#{type}, number=#{number}, quantity=#{quantity} where product_id = #{productId}
+    </update>
 
-
+    <delete id="deleteProduct">
+        delete from product_table where product_id = #{productId}
+    </delete>
 </mapper>

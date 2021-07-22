@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,24 +30,24 @@ public class SettingController {
 
     @PostMapping("/getServiceList")
     public List<Map<String, Object>> getServiceList(){
-        List<Map<String, Object>> result;
+        List<Map<String, Object>> result = new ArrayList<>();
         try {
             result = settingService.getServiceList();
-        }catch (IOException ignored){
-            return null;
+        }catch (IOException e){
+            e.printStackTrace();
+            return result;
         }
        return result;
     }
 
     @PostMapping("updateService")
     public void updateService(@RequestBody Map<String, Service> map){
-        System.out.println(map.get("service"));
         settingService.updateService(map.get("service"));
     }
 
     @PostMapping("deleteService")
-    public void updateService(@RequestBody String id){
-        settingService.deleteService(id);
+    public void deleteService(@RequestBody Map<String, String> map){
+        settingService.deleteService(map.get("id"));
     }
 
 }

@@ -10,4 +10,6 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
     void addProduct(List<Product> product);
+    void updateProduct(Product product);
+    void deleteProduct(String productId);
 }

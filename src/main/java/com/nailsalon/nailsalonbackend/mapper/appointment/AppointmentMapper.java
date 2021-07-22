@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppointmentMapper {
     void addAppointment(Appointment appointment);
+    void deleteAppointment(String appointmentId);
 }

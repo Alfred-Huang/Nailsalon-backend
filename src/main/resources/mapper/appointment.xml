@@ -9,4 +9,8 @@
         (#{appointmentId}, #{customer}, #{service}, #{people}, #{employee}, #{date}, #{time})
     </insert>
 
+    <update id="deleteAppointment">
+        update appointment_table set deleted = '1' where appointment_id = #{appointmentId}
+    </update>
+
 </mapper>
