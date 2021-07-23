@@ -6,6 +6,7 @@ import com.nailsalon.nailsalonbackend.dao.NBAPlayerDao;
 import com.nailsalon.nailsalonbackend.pojo.NBAPlayer;
 import com.nailsalon.nailsalonbackend.service.NBAPlayerService;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import jdk.management.resource.ResourceType;
 import org.elasticsearch.action.admin.indices.create.CreateIndexAction;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -15,18 +16,15 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.ml.job.results.Bucket;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchAllQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.*;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.InternalSum;
+import org.elasticsearch.search.aggregations.metrics.ParsedSum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -135,42 +133,32 @@ class NailsalonbackendApplicationTests {
 
     @Test
     public void getProduct() throws IOException {
-        String[] include = {"productId", "brand", "type", "quantity", "number"};
+        String[] include = {"brand", "type", "quantity", "number"};
         String[] exclude = {"_index"};
         SearchRequest searchRequest = new SearchRequest("product_table");
+        RangeQueryBuilder rangequerybuilder = QueryBuilders
+                .rangeQuery("quantity")
+                .from("1").to("2");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
-        searchRequest.source(searchSourceBuilder.fetchSource(include, exclude));
+        searchSourceBuilder.query(rangequerybuilder);
+        searchRequest.source(searchSourceBuilder.fetchSource(include, exclude).sort("brand.keyword", SortOrder.ASC));
         SearchResponse response = client.search(searchRequest,RequestOptions.DEFAULT);
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
-        result.put("data", new ArrayList<>());
-        result.put("tag", new ArrayList<>());
+        List<Map<String, Object>> list = new ArrayList<>();
         for(SearchHit documentFields : response.getHits().getHits()){
-            result.get("data").add(documentFields.getSourceAsMap());
+            list.add(documentFields.getSourceAsMap());
         }
-        System.out.println(result.get("data"));
-//        searchRequest.source(searchSourceBuilder.aggregation(interestsAgg));
-//        searchRequest.source(searchSourceBuilder);
-//        SearchResponse brandResponse = client.search(searchRequest,RequestOptions.DEFAULT);
-//        for(SearchHit documentFields : brandResponse.getHits().getHits()){
-//            result.get("tag").add(documentFields.getSourceAsMap());
-//        }
-//        System.out.println(result.get("tag"));
+        System.out.println(list);
     }
 
 
     @Test
     public void getD() throws IOException {
-        String[] include = {"appointment_id", "employee", "service", "date", "time", "people"};
-        String[] exclude = {"_index", "modification_time", "insertion_time", "type"};
-        SearchRequest searchRequest = new SearchRequest("appointment_table");
+        String[] include = { "price","time", "insertion_time"};
+        String[] exclude = {"modification_time", "type", "deleted", "_index"};
+        SearchRequest searchRequest = new SearchRequest("sale_table");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQuery = QueryBuilders.matchQuery("date", "2021/07/23");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(matchQuery);
-        boolQueryBuilder.filter(QueryBuilders.termQuery("deleted", false));
-        searchSourceBuilder.query(boolQueryBuilder);
-        searchRequest.source(searchSourceBuilder.fetchSource(include, exclude).sort("time.keyword", SortOrder.ASC));
+        searchSourceBuilder.query(  QueryBuilders.matchQuery("date", "2021-07-22")).sort("insertion_time", SortOrder.ASC);
+        searchRequest.source(searchSourceBuilder.fetchSource(include, exclude));
         SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
         List<Map<String, Object>> list = new ArrayList<>();
         for(SearchHit documentFields : response.getHits().getHits()){

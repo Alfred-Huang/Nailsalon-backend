@@ -39,11 +39,12 @@ public class ManageController {
 
     @PostMapping("/getEmployee")
     public  List<Map<String, Object>> setEmployee(){
-        List<Map<String, Object>> list = null;
+        List<Map<String, Object>> list = new ArrayList<>();
         try {
             list = manageService.getEmployee();
         } catch (IOException e) {
             e.printStackTrace();
+            return list;
         }
         return list;
     }
@@ -77,7 +78,6 @@ public class ManageController {
             }
         }
         result.add(sb.toString());
-        System.out.println(result);
         return result;
     }
 
