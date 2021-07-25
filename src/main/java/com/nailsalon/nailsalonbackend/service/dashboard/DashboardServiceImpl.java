@@ -38,7 +38,7 @@ public class DashboardServiceImpl implements DashboardService{
         String[] exclude = {"modification_time", "type", "deleted", "_index"};
         SearchRequest searchRequest = new SearchRequest("sale_table");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(  QueryBuilders.matchQuery("date", date)).sort("insertion_time", SortOrder.ASC);
+        searchSourceBuilder.query(QueryBuilders.matchQuery("date", date)).sort("insertion_time", SortOrder.ASC);
         searchRequest.source(searchSourceBuilder.fetchSource(include, exclude));
         SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
         List<Map<String, Object>> list = new ArrayList<>();
@@ -52,7 +52,7 @@ public class DashboardServiceImpl implements DashboardService{
     public List<Map<String, String>> getEmployeeSummary(String date) throws IOException {
         SearchRequest searchRequest = new SearchRequest("employee_sale_table");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("date", "2021-07-14"));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("date", date));
         TermsAggregationBuilder aggregationBuilder = AggregationBuilders.terms("employee")
                 .field("employee.keyword");
         SumAggregationBuilder saleSumAgg = AggregationBuilders.sum("totalSale").field("sale");
@@ -96,7 +96,7 @@ public class DashboardServiceImpl implements DashboardService{
 
     @Override
     public List<Map<String, Object>> getProductReminder() throws IOException {
-        String[] include = {"product_id", "brand", "type", "quantity", "number"};
+        String[] include = {"productId", "brand", "type", "quantity", "number"};
         String[] exclude = {"_index"};
         SearchRequest searchRequest = new SearchRequest("product_table");
         RangeQueryBuilder rangequerybuilder = QueryBuilders
